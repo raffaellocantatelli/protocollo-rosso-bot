@@ -44,7 +44,7 @@ logger = logging.getLogger("protocollo")
 
 COMMANDS = [
     BotCommand("rrr", "Sottomenu con tutti i comandi"),
-    BotCommand("palestra", "Calcolo kcal, proteine, scheda"),
+    BotCommand("palestra", "Peso ideale, kcal, settimane"),
     BotCommand("scheda", "Rivedi il profilo salvato"),
     BotCommand("corpo", "Sonno, luce, integratori"),
     BotCommand("metodo", "Il ciclo: ipotesi, atto, esito"),
@@ -70,7 +70,7 @@ class _Health(BaseHTTPRequestHandler):
             payload = json.dumps(sdq1.health(), ensure_ascii=False).encode("utf-8")
             self._send(200, payload, "application/json; charset=utf-8")
             return
-        self._send(200, b"ok protocollo-rosso-bot 1.6.5", "text/plain; charset=utf-8")
+        self._send(200, b"ok protocollo-rosso-bot 1.6.6", "text/plain; charset=utf-8")
 
     def do_POST(self) -> None:
         path = (self.path or "/").split("?", 1)[0]
