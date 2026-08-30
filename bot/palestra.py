@@ -1,7 +1,6 @@
-"""Calcolo onesto: Mifflin-St Jeor + macro da letteratura, non un guru.
+"""Calcolo onesto: Mifflin-St Jeor, BMI/Lorentz, tempi da letteratura.
 
-BMR: Mifflin 1990. Proteine 1.6–2.2 g/kg (ISSN). Deficit ~500 kcal.
-Stima, non prescrizione medica.
+Non è prescrizione medica. Peso ideale = fascia, non un numero magico.
 """
 
 from __future__ import annotations
@@ -31,25 +30,25 @@ FATTORI = {
 SCHEDE = {
     "dimagrire": (
         "*Scheda forza + cammino* (3 giorni, full body)\n"
-        "1. Squat o leg press \u2014 3x8\n"
-        "2. Panca o piegamenti \u2014 3x8\n"
-        "3. Rematore o trazioni \u2014 3x8\n"
-        "4. Hip hinge (stacco rumeno o hip thrust) \u2014 3x8\n"
-        "5. Cammino 7–9.000 passi il resto della settimana\n\n"
-        "Trasforma il fisico soprattutto il *deficit* + la proteina, non l'isolamento bicipiti."
+        "1. Squat o leg press — 3x8\n"
+        "2. Panca o piegamenti — 3x8\n"
+        "3. Rematore o trazioni — 3x8\n"
+        "4. Hip hinge (stacco rumeno o hip thrust) — 3x8\n"
+        "5. Cammino 7–9.000 passi il resto della settimana\n"
+        "Il grasso scende col *deficit*. I pesi tengono il muscolo."
     ),
     "muscolo": (
         "*Scheda ipertrofia* (4 giorni)\n"
         "A. Squat 4x6–8 + affondi 3x10\n"
         "B. Panca 4x6–8 + military 3x8 + dip 3x8\n"
         "C. Stacco 3x5 + rematore 4x8 + trazioni 3x max\n"
-        "D. Hip thrust 3x10 + curl/push 3x12 + core\n\n"
-        "Progressione: +1–2 kg quando fai tutte le ripetizioni."
+        "D. Hip thrust 3x10 + curl/push 3x12 + core\n"
+        "+1–2 kg sul bilanciere quando chiudi tutte le ripetizioni."
     ),
     "mantenere": (
         "*Mantenimento* (3 giorni)\n"
-        "Squat, panca, rematore, hinge — 3x8.\n"
-        "Cammino quotidiano. Non aggiungere volume a caso."
+        "Squat, panca, rematore, hinge — 3x8 + cammino.\n"
+        "Kcal di manutenzione. Non rincorrere la bilancia ogni giorno."
     ),
 }
 
@@ -105,6 +104,54 @@ def _num(s: str) -> float | None:
         return None
 
 
+def piano_peso(sesso: str, h: float, w: float, ob: str) -> dict:
+    hm = h / 100.0
+    bmi = w / (hm * hm)
+    fascia_min = 20.0 * hm * hm
+    fascia_max = 24.9 * hm * hm
+    centro = 22.0 * hm * hm
+    if sesso == "m":
+        lorentz = h - 100 - (h - 150) / 4.0
+    else:
+        lorentz = h - 100 - (h - 150) / 2.5
+    if ob == "dimagrire":
+        target = min(w - 0.5, max(fascia_min, min(centro, fascia_max)))
+        if w <= fascia_max:
+            target = min(w, centro)
+        ritmo = 0.6
+        ritmo_lento, ritmo_veloce = 0.4, 0.8
+    elif ob == "muscolo":
+        target = max(w + 0.5, min(fascia_max, max(centro, w + 2.0)))
+        if w >= fascia_min:
+            target = min(fascia_max, w + 3.0)
+        ritmo = 0.25
+        ritmo_lento, ritmo_veloce = 0.15, 0.4
+    else:
+        target = w
+        ritmo = ritmo_lento = ritmo_veloce = 0.0
+    delta = target - w
+    if abs(delta) < 0.8:
+        sett = sett_min = sett_max = 0
+    else:
+        kg = abs(delta)
+        sett = max(4, round(kg / ritmo))
+        sett_min = max(3, round(kg / max(ritmo_veloce, 0.1)))
+        sett_max = max(sett_min + 2, round(kg / max(ritmo_lento, 0.1)))
+    return {
+        "bmi": round(bmi, 1),
+        "fascia_min": round(fascia_min, 1),
+        "fascia_max": round(fascia_max, 1),
+        "centro": round(centro, 1),
+        "lorentz": round(lorentz, 1),
+        "target": round(target, 1),
+        "delta": round(delta, 1),
+        "ritmo": ritmo,
+        "settimane": sett,
+        "settimane_min": sett_min,
+        "settimane_max": sett_max,
+    }
+
+
 def calcola(sesso: str, eta: int, h: float, w: float, att: str, ob: str) -> dict:
     bmr = 10 * w + 6.25 * h - 5 * eta + (5 if sesso == "m" else -161)
     tdee = bmr * FATTORI[att]
@@ -120,7 +167,7 @@ def calcola(sesso: str, eta: int, h: float, w: float, att: str, ob: str) -> dict
     prot = round(prot_kg * w)
     fat = round(max(0.8 * w, 0.25 * kcal / 9))
     carb = max(0, round((kcal - prot * 4 - fat * 9) / 4))
-    return {
+    out = {
         "bmr": round(bmr),
         "tdee": round(tdee),
         "kcal": round(kcal),
@@ -128,32 +175,59 @@ def calcola(sesso: str, eta: int, h: float, w: float, att: str, ob: str) -> dict
         "grassi_g": fat,
         "carbo_g": carb,
     }
+    out.update(piano_peso(sesso, h, w, ob))
+    return out
+
+
+def _blocco_tempo(d: dict) -> str:
+    ob = d["obiettivo"]
+    if ob == "mantenere" or d.get("settimane", 0) == 0:
+        return (
+            f"BMI `{d.get('bmi', '?')}` \u00b7 fascia sana ~ "
+            f"`{d.get('fascia_min')}`–`{d.get('fascia_max')}` kg "
+            f"(BMI 20–24.9). Centro `{d.get('centro')}` kg.\n"
+            f"Lorentz (altra stima) `{d.get('lorentz')}` kg.\n"
+            "Sei già vicino: tieni le kcal di manutenzione e la scheda."
+        )
+    verso = "perdere" if d["delta"] < 0 else "mettere"
+    return (
+        f"BMI oggi `{d.get('bmi')}`\n"
+        f"Fascia di peso (BMI 20–24.9): `{d.get('fascia_min')}`–`{d.get('fascia_max')}` kg\n"
+        f"Punto medio (BMI 22): `{d.get('centro')}` kg\n"
+        f"Lorentz: `{d.get('lorentz')}` kg\n"
+        f"*Bersaglio di questo ciclo:* `{d.get('target')}` kg "
+        f"({verso} `{abs(d['delta'])}` kg)\n"
+        f"Ritmo onesto: ~`{d.get('ritmo')}` kg/settimana\n"
+        f"*Tempo stimato:* `{d.get('settimane_min')}`–`{d.get('settimane_max')}` settimane "
+        f"(centro ~`{d.get('settimane')}`).\n"
+        "Le prime 1–2 settimane la bilancia muove anche acqua. "
+        "Conta la media di 7 giorni, non un lunedì."
+    )
 
 
 def _scheda_testo(d: dict) -> str:
     ob = d["obiettivo"]
     return (
-        f"*Profilo salvato* — stima, non prescrizione\n\n"
+        f"*Profilo* — stima, non prescrizione\n\n"
         f"{d['sesso'].upper()}, {d['eta']} anni, {d['altezza_cm']:.0f} cm, {d['peso_kg']:.1f} kg\n"
         f"Obiettivo: *{ob}* \u00b7 attività: {d['attivita']}\n\n"
-        f"BMR ~ `{d.get('bmr', '?')}` kcal\n"
-        f"Manutenzione (TDEE) ~ `{d.get('tdee', d['kcal'])}` kcal\n"
+        f"{_blocco_tempo(d)}\n\n"
+        f"BMR ~ `{d.get('bmr', '?')}` \u00b7 manutenzione `{d.get('tdee', d['kcal'])}` kcal\n"
         f"*Target oggi:* `{d['kcal']}` kcal\n"
-        f"Proteine `{d['proteine_g']}` g \u00b7 grassi `{d['grassi_g']}` g \u00b7 carbo `{d['carbo_g']}` g\n\n"
-        f"Grassi alimentari: olio extravergine, uova, pesce, frutta secca. "
-        f"Non servono olio di cocco miracoloso né zero grassi.\n\n"
+        f"Proteine `{d['proteine_g']}` g \u00b7 grassi `{d['grassi_g']}` g \u00b7 carbo `{d['carbo_g']}` g\n"
+        f"Grassi: EVO, uova, pesce, frutta secca.\n\n"
         f"{SCHEDE[ob]}\n\n"
-        f"P6: se in 4 settimane il peso non si muove di 0.3–0.6 kg (dimagrire) "
-        f"o non sale la forza (muscolo), ricalcola con /palestra. "
-        f"Cade se copi le kcal e salti gli allenamenti.\n"
-        f"Fonti: Mifflin-St Jeor 1990; ISSN proteine 1.6–2.2 g/kg."
+        f"P6: a metà del tempo stimato, se il peso non ha fatto metà strada, "
+        f"ricalcola con /palestra. Cade se copi le kcal e salti i pesi.\n"
+        f"Fonti: Mifflin 1990; BMI OMS; Lorentz; ISSN 1.6–2.2 g/kg; "
+        f"calo ~0.5–0.8 kg/sett; massa ~0.15–0.4 kg/sett."
     )
 
 
 async def cmd_palestra(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     context.user_data["corpo"] = {}
     await update.message.reply_text(
-        "Obiettivo? Stima da formule pubblicate, non magia.",
+        "Obiettivo? Ti do fascia di peso, bersaglio e settimane stimate.",
         reply_markup=ReplyKeyboardMarkup(
             [["dimagrire", "muscolo"], ["mantenere", "/annulla"]],
             resize_keyboard=True,
@@ -167,7 +241,6 @@ async def cmd_scheda(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     if not row:
         await update.message.reply_text("Nessun profilo. /palestra per crearne uno.")
         return
-    # ricalcolo bmr per display se manca
     extra = calcola(
         row["sesso"], row["eta"], row["altezza_cm"], row["peso_kg"],
         row["attivita"], row["obiettivo"],
