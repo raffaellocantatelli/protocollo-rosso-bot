@@ -12,75 +12,85 @@ TASTIERA = ReplyKeyboardMarkup(
     [
         ["Sonno", "Luce"],
         ["Movimento", "Misura"],
-        ["Integratori", CHIUDI],
+        ["Integratori", "/palestra"],
+        ["/scheda", CHIUDI],
     ],
     resize_keyboard=True,
 )
 
-INTRO = """\
+INTRO = """\\
 *Corpo — hacking onesto*
 
 Non è Sinclair. Non è un negozio.
-Tre pile: fatto, ipotesi, gusto.
+Prima un numero, poi un'ipotesi.
 
-Tocca un tasto.
+Tocca un tasto. Peso e settimane: /palestra.
 """
 
 SCHEDE = {
-    "sonno": """\
-*Sonno* — fatto, non moda
+    "sonno": """\\
+*Sonno*
 
-Ore buie, orario stabile, niente luce bianca forte nell'ultima ora.
-Se dormi male, prima di un integratore: orari, caffeina dopo le 15, schermo a letto.
+Orario stabile, buio, niente luce bianca forte l'ultima ora.
+Caffeina dopo le 15 e schermo a letto prima di qualsiasi integratore.
 
-P6: cade se per 14 notti l'orario è fisso e stai ancora a pezzi — allora serve un medico, non un reel.
+Numero: ore di sonno, media su 7 notti.
+P6: 14 notti con orario fisso e sei ancora a pezzi → medico, non reel.
 """,
-    "luce": """\
-*Luce* — circadiano
+    "luce": """\\
+*Luce*
 
-Mattina: dieci minuti fuori, occhi verso il cielo (non nel sole).
-Sera: luce calda, bassa.
+Mattina: dieci minuti fuori (non nel sole).
+Sera: luce calda e bassa.
 
-Questo sposta ormoni (cortisolo, melatonina) più di molti stack.
-Ipotesi extra (occhiali blu, lampade 10.000 lux): solo se il basale è già fatto.
+Questo muove cortisolo e melatonina più di molti stack.
+Occhiali blu / lampada 10.000 lux: ipotesi, solo dopo il basale.
 """,
-    "movimento": """\
+    "movimento": """\\
 *Movimento*
 
-Fatto: camminare ogni giorno + due sessioni di forza a settimana battono il 90% dei proto «anti-age».
-Gusto: la palestra che ti piace, sennò non la fai.
+Fatto: cammino ogni giorno + 2–4 sedute di forza.
+La scheda precisa sta in /palestra, non qui.
 
-P6: se in 30 giorni non c'è né fiato né una misura (passi, peso, vita), il piano è teatro.
+Numero: sedute fatte in 7 giorni, oppure passi medi.
+P6: 30 giorni senza +forza e senza peso/vita che si muove → teatro.
 """,
-    "misura": """\
-*Misura* — l'unico hacking che P5 accetta
+    "misura": """\\
+*Misura*
 
-Scegli *un* numero per 90 giorni: passi, vita in cm, sonno in ore, o analisi già prescritte.
-Scrivilo con /azione o /fuori.
+Sì: senza numero l'ottimizzazione è vuota.
+No: non basta «un numero a caso per 90 giorni».
 
-Senza numero, «ottimizzazione» è un'etichetta vuota.
+Tre numeri, non di più:
+1. *Peso* — media di 7 giorni (non un lunedì)
+2. *Vita* in cm, stessa ora, a digiuno
+3. *Passi* medi, o sedute di forza fatte
+
+Il piano (fascia, bersaglio, settimane, kcal) lo calcola /palestra.
+Oggi registri il punto zero con /fuori, tipo:
+`peso 82.4 vita 94 passi 6400`
+
+Controllo a *4 settimane*, non solo a 90.
+P6: se a metà del tempo di /scheda non hai fatto metà strada, ricalcoli.
+Analisi del sangue: solo quelle già prescritte, non uno shopping di lab.
 """,
-    "integratori": """\
-*Lista — etichette, non ricetta*
+    "integratori": """\\
+*Integratori* — ipotesi, non fede
 
-*Fatto utile (se manca)*
-• Vitamina D — se le analisi sono basse
+*Se manca (fatto)*
+• Vitamina D — analisi basse
 • Omega-3 — se non mangi pesce
-• Magnesio la sera — se il sonno è corto e il medico non vieta
+• Magnesio sera — se il sonno è corto e il medico non vieta
 
-*Ipotesi (Sinclair / reel)*
-• NMN / NR — alzano il NAD nel sangue; non è dimostrato che allunghino la vita umana
-• Resveratrolo — prova umana debole; assorbimento scarso
-• Spermidina, fisetina — soprattutto topi
-• Quercetina, TMG — rumore da stack, non un protocollo
+*Sinclair / reel (ipotesi)*
+• NMN/NR alzano il NAD; non la vita umana dimostrata
+• Resveratrolo, spermidina, fisetina — deboli o topi
 
-*Farmaco, non integratore*
-• Metformina, rapamicina, statina, aspirina quotidiana — solo medico
+*Farmaco*
+Metformina, rapamicina, statina, aspirina quotidiana: medico.
 
-*Regola*
 Uno alla volta. Una scadenza. Un numero da rivedere.
-Se il numero non si muove, l'ipotesi cade.
-Il bot non prescrive.
+Se il numero non si muove, cade.
 """,
 }
 
