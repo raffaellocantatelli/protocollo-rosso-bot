@@ -26,6 +26,7 @@ from bot.db import init_db
 from bot.handlers import build_command_handlers, build_conversation_handlers, cmd_unknown, messaggio_libero
 from bot.menu_rrr import CHIUDI, cmd_chiudi_menu, cmd_rrr
 from bot.metodo import cmd_metodo
+from bot.misure import cmd_misura, cmd_misure
 from bot.palestra import build_palestra_conversation, cmd_scheda
 from bot.scacchiera_flow import (
     build_libro_conversation,
@@ -46,6 +47,8 @@ COMMANDS = [
     BotCommand("rrr", "Sottomenu con tutti i comandi"),
     BotCommand("palestra", "Peso ideale, kcal, settimane"),
     BotCommand("scheda", "Rivedi il profilo salvato"),
+    BotCommand("misura", "Registra un numero: peso, vita, passi…"),
+    BotCommand("misure", "Trend, bilancio e verdetto verso la meta"),
     BotCommand("corpo", "Sonno, luce, integratori"),
     BotCommand("metodo", "Il ciclo: ipotesi, atto, esito"),
     BotCommand("testimone", "Un atto che un terzo può vedere"),
@@ -158,6 +161,8 @@ def build_application() -> Application:
     for h in build_command_handlers():
         app.add_handler(h)
     app.add_handler(CommandHandler("scheda", cmd_scheda))
+    app.add_handler(CommandHandler("misura", cmd_misura))
+    app.add_handler(CommandHandler("misure", cmd_misure))
     app.add_handler(CommandHandler("rrr", cmd_rrr))
     app.add_handler(CommandHandler("metodo", cmd_metodo))
     app.add_handler(CommandHandler("corpo", cmd_corpo))

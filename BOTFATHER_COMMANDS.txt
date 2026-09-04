@@ -10,6 +10,8 @@ lista - Rivedi le tue possibilità
 registro - Registro epistemico (strati + P6)
 stato - Conteggi tecnici del diario
 azione - Registra un’azione verificabile
+misura - Registra una misura (peso, vita, passi…)
+misure - Trend, bilancio e verdetto verso la meta
 veli - Dissolvi uno dei tre veli
 etichetta - Colloca un’affermazione negli strati
 aiuto - Elenco comandi
