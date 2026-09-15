@@ -20,6 +20,7 @@ class PossibilityState(IntEnum):
 
 class ActionState(IntEnum):
     WAITING_DESCRIPTION = 30
+    WAITING_VERIFY = 31
 
 
 class VeloState(IntEnum):
