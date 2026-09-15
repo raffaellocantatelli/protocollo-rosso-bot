@@ -43,15 +43,20 @@ logging.basicConfig(
 logger = logging.getLogger("protocollo")
 
 COMMANDS = [
-    BotCommand("rrr", "Sottomenu con tutti i comandi"),
-    BotCommand("palestra", "Peso ideale, kcal, settimane"),
-    BotCommand("scheda", "Rivedi il profilo salvato"),
-    BotCommand("corpo", "Sonno, luce, integratori"),
-    BotCommand("metodo", "Il ciclo: ipotesi, atto, esito"),
+    BotCommand("start", "Ingresso nel protocollo"),
+    BotCommand("tesi", "La tesi grande — IPOTESI + P6"),
+    BotCommand("strati", "I due strati e le etichette"),
+    BotCommand("p5p6", "Niente auto-conferma + come può cadere"),
+    BotCommand("santuario", "Gesto lento, silenzio, candela"),
+    BotCommand("tieni_aperto", "Deposita una possibilità come IPOTESI"),
+    BotCommand("lista", "Rivedi le possibilità aperte"),
+    BotCommand("azione", "Un atto vero che un altro possa vedere"),
+    BotCommand("veli", "Uno dei tre veli finali"),
+    BotCommand("etichetta", "Colloca una frase nello strato giusto"),
+    BotCommand("aiuto", "Elenco comandi"),
+    BotCommand("rrr", "Tastiera: protocollo + extra"),
     BotCommand("testimone", "Un atto che un terzo può vedere"),
     BotCommand("fuori", "Una cosa fatta oggi, fuori da qui"),
-    BotCommand("azione", "Registra un atto verificabile"),
-    BotCommand("aiuto", "Le tre cose che contano"),
     BotCommand("ping", "Il processo è vivo"),
     BotCommand("annulla", "Esci da un flusso"),
 ]
@@ -70,7 +75,7 @@ class _Health(BaseHTTPRequestHandler):
             payload = json.dumps(sdq1.health(), ensure_ascii=False).encode("utf-8")
             self._send(200, payload, "application/json; charset=utf-8")
             return
-        self._send(200, b"ok protocollo-rosso-bot 1.6.6", "text/plain; charset=utf-8")
+        self._send(200, b"ok protocollo-rosso-bot 1.7.0", "text/plain; charset=utf-8")
 
     def do_POST(self) -> None:
         path = (self.path or "/").split("?", 1)[0]
@@ -132,7 +137,7 @@ async def post_init(application: Application) -> None:
         "Tenere aperta una possibilità senza spacciarla per un fatto. "
         "Poi una cosa vera, che un altro possa vedere."
     )
-    await application.bot.set_my_short_description("Protocollo Rosso · bordo, non abitante")
+    await application.bot.set_my_short_description("Protocollo Rosso · non chiede di essere creduto")
     me = await application.bot.get_me()
     logger.info("Collegato come @%s. Polling.", me.username)
 
