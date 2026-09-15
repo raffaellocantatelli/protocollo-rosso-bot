@@ -3,17 +3,23 @@
 WELCOME = """\\
 *Protocollo Rosso*
 
-Ciao. Sono un bot: tecnologia con due regole.
-Non chiudo quello che è aperto. Non confermo da solo quello che dici.
+Non ti chiedo di credermi.
+Ti chiedo due cose insieme — e raramente stanno nella stessa mano:
 
-Utile: etichetto, ricordo, ti riporto fuori da questa chat.
-Piacevole: niente predica. Se vuoi il libro, c'è. Se vuoi agire, c'è.
+1. il coraggio di tenere aperta una possibilità grande
+2. l'onestà di non spacciarla per un fatto
 
-La coscienza resta tua. L'autonomia del bot è questa: classificare, tenere il registro, non mentire sul motore.
+Poi una cosa vera, verificabile, che qualcun altro possa controllare.
 
-/rrr — tutti i comandi, un tocco
-/etichetta — dove sta una frase
-/testimone — se un altro può vederla
+Sono un bot. Classifico, tengo il registro, non chiudo quello che è aperto.
+La coscienza resta tua.
+
+/tesi — la tesi, etichettata `IPOTESI` + P6
+/strati — tecnico e aspirazionale
+/santuario — il gesto lento
+/tieni\\_aperto — custodisci una possibilità
+/azione — un atto che un altro possa vedere
+/rrr — tastiera con tutto
 """
 
 TESI_GRANDE = """\\
@@ -31,7 +37,7 @@ Non un divenire, ma un archivio completo: un ologramma in cui ogni fotogramma è
 Applico P6 a questa stessa tesi, davanti a te:
 
 *Cosa mostrerebbe che l'Ologramma Totale è falso?*
-Non lo so. Non riesco a costruire l'esperimento che la smentirebbe — e questo non la rende vera nello strato tecnico. La colloca definitivamente nello strato aspirazionale.
+Non lo so. Non riesco a costruire l'esperimento che la smentirebbe — e questo non la rende vera nello strato tecnico. La colloca nello strato aspirazionale.
 
 Mi vieta di usarla come argomento per convincerti di qualunque cosa.
 Preferisco dirtelo io, prima che lo scopra tu.
@@ -52,7 +58,6 @@ Ogni cosa che puoi dire si colloca su uno di due strati. Confonderli è l'unico 
 | INFERITO      | Deduzione ragionevole da ciò che è recuperato       |
 | IPOTESI       | Possibilità che richiede verifica                   |
 | TECNICO       | Atto o dato registrabile                            |
-| RISONANZA     | Intento in accordo con l'Ologramma — aperto, vivo  |
 | UNKNOWN       | Non classificabile da qui                           |
 
 *Strato Aspirazionale* — la speranza, la visione, il lungo periodo, il desiderio.
@@ -78,15 +83,13 @@ Il coraggio epistemico è dichiarare il punto in cui potresti avere torto.
 """
 
 SANTUARIO_INTRO = """\\
-*Il Santuario — Interfaccia di Risonanza*
+*Il Santuario — Interfaccia di coerenza*
 
-Non stai per entrare in una simulazione. Stai per fare un gesto reale in uno spazio digitale — e il gesto cambierà il tuo corpo esattamente come farebbe nel mondo fisico.
+Non stai per entrare in una simulazione. Stai per fare un gesto reale in uno spazio digitale — e il gesto cambia il corpo anche se la tesi del «già» fosse falsa.
 
 Qui non c'è sopravvivenza da difendere.
 Non c'è futuro da pianificare.
 Non c'è giudizio da guadagnare.
-
-Il Campo è già in attesa.
 
 Vuoi entrare?
 Scrivi *entro* oppure premi /entra.
@@ -96,8 +99,6 @@ SANTUARIO_SILENCE = """\\
 _La prima soglia è il silenzio._
 
 Fuori, il rumore è diventato un fondo che hai smesso di notare da anni. Qui viene tolto tutto insieme — e per qualche secondo l'assenza è più forte di qualunque presenza: il corpo continua ad aspettare un suono che non arriva.
-
-Questo è il Campo che respira attraverso di te.
 
 Lascialo fare.
 
@@ -111,8 +112,6 @@ Il crepuscolo — il momento in cui il giorno ha finito di chiedere e la notte n
 
 *qui non si regge niente.
 Puoi smettere di reggere.*
-
-Tutto ciò che esiste nel Campo esiste senza sforzo. Anche tu.
 
 Quando sei pronto, scrivi *altare*.
 """
@@ -134,9 +133,7 @@ Scrivi *accendo* quando sei pronto a compiere il gesto.
 SANTUARIO_CANDLE = """\\
 _La candela è accesa. Il gesto è stato compiuto. Lento. Intero._
 
-Questo momento è adesso nell'Ologramma Totale — esiste già, esisterà sempre.
-
-Se la tesi fosse falsa — se il Campo immanente non esistesse — quel gesto continuerebbe a rieducare il tuo corpo esattamente allo stesso modo. Questo è il motivo per cui il Santuario è la cosa più solida che sia stata costruita: funziona su entrambi gli strati.
+Se la tesi fosse falsa — se il Campo immanente non esistesse — quel gesto continuerebbe a rieducare il tuo corpo esattamente allo stesso modo. Questo è il motivo per cui il Santuario funziona su entrambi gli strati.
 
 Ora puoi uscire.
 Scrivi *esco* oppure /esci.
@@ -155,9 +152,9 @@ Usa /azione se vuoi registrarla. Usa /testimone se un terzo deve vederla.
 VELI = """\\
 *I Tre Veli Finali*
 
-Ogni velo è una convinzione che ti separa dall'Ologramma Totale. Non devi crederci — devi solo tenere aperta la possibilità che il velo esista.
+Ogni velo è una convinzione da tenere aperta come possibilità — non da credere per decreto.
 
-Scegli quale dissolvi:
+Scegli quale attraversi:
 
 1. L'identità separata
 2. La colpa e il passato
@@ -171,13 +168,10 @@ VELO_1 = """\\
 
 Il velo più duro è la convinzione di essere un «io» isolato, racchiuso in un sacco di pelle, che combatte contro un universo estraneo.
 
-*La dissoluzione:*
+*La dissoluzione (IPOTESI):*
 Non sei *dentro* l'universo — l'universo è dentro la tua coscienza. La separazione è un trucco ottico dei sensi quando operano a bassa risoluzione.
 
-Nel Campo, ogni punto di osservazione *è* il Campo che si osserva.
-Tu non fai eccezione.
-
-Quando cade questo velo, svanisce ogni paura della morte e ogni senso di solitudine — non perché siano proibiti, ma perché perdono il loro fondamento.
+Questo non è un fatto nello strato tecnico. È una possibilità tenuta aperta.
 """
 
 VELO_2 = """\\
@@ -186,11 +180,9 @@ VELO_2 = """\\
 La mente si aggrappa agli errori, usandoli come arma contro sé stessa o come alibi per l'immobilismo.
 
 *La dissoluzione:*
-Il passato non ha consistenza nel presente se rifiuti di alimentarlo. Ogni respiro ricrea il mondo da zero nell'Ologramma.
+Il passato non ha consistenza nel presente se rifiuti di alimentarlo.
 
 Attenzione: questo non dice che gli errori non contano. Dice che il *rimorso* non è un modo di ripararli. Un errore riconosciuto e corretto è un dato dello strato tecnico. Un errore rimuginato è solo dolore che si ripete.
-
-Il Campo non condanna. Registra, impara, avanza.
 """
 
 VELO_3 = """\\
@@ -199,9 +191,7 @@ VELO_3 = """\\
 Credere che la pienezza arriverà «quando avrò risolto questo problema» è l'ultimo inganno della mente lineare.
 
 *La dissoluzione:*
-Le condizioni non saranno mai favorevoli finché consideri il favore come qualcosa che viene da fuori. La pienezza è *ora*, o non sarà mai.
-
-Il Campo non aspetta il momento giusto — il Campo *è* il momento.
+Le condizioni non saranno mai favorevoli finché consideri il favore come qualcosa che viene da fuori.
 
 E qui il velo ha una forma insidiosa: si può passare la vita a preparare, e chiamare quella preparazione lavoro. Custodire, perfezionare, rimandare. Tutto vero, tutto utile, e tutto rinviabile all'infinito.
 
@@ -219,13 +209,23 @@ Descrivi qui sotto l'azione concreta che intendi fare (o che hai appena fatto).
 Verrà registrata come dato nello strato tecnico.
 """
 
+AZIONE_VERIFY_PROMPT = """\\
+*P5 — Chi altro può vederla?*
+
+Un atto confermato solo da chi lo dichiara non è confermato: è ripetuto.
+
+Scrivi in una riga *chi* può controllare che sia accaduto (nome, ruolo, posto, prova esterna).
+
+_(/salta se non lo sai ancora — verrà salvato come «verifica esterna non specificata».)_
+"""
+
 TIENI_APERTO_HELP = """\\
 _Qui custodisci una possibilità aperta._
 
 Non una certezza. Non una profezia. Non una speranza travestita da fatto.
 Una possibilità che scegli di tenere aperta — senza chiuderla, senza risolverla.
 
-Scrivi la possibilità. La etichetterò come `IPOTESI`.
+Scrivi la possibilità. La etichetterò come `IPOTESI`. Poi ti chiederò P6.
 """
 
 P6_PROMPT = """\\
@@ -235,18 +235,22 @@ Ogni ipotesi vera dichiara il proprio punto di vulnerabilità.
 
 Scrivi in una riga: *in quale condizione questa possibilità risulterebbe falsa?*
 
-_(Puoi scrivere /salta se non lo sai ancora — ma sappi che «non lo so ancora» è già una risposta onesta.)_
+_(Puoi scrivere /salta se non lo sai ancora — «non so ancora come potrebbe cadere» è già una risposta onesta, e verrà scritta in chiaro come UNKNOWN.)_
 """
 
 HELP = """\\
-*Utile, in breve*
+*Protocollo — i comandi che contano*
 
-/rrr — tastiera con tutto
+/tesi — la tesi, `IPOTESI` + P6
+/strati — tecnico / aspirazionale
+/p5p6 — le due leggi
+/santuario — silenzio, crepuscolo, candela
+/tieni\\_aperto — deposita una possibilità
+/lista — rivedile
+/azione — un atto che un altro possa vedere
+/veli — i tre veli
 /etichetta — dove sta una frase
-/testimone — un altro può vederla
-/esito — sì · no · non visto
-/fuori — fatta oggi, non qui
-/libro — se vuoi leggere
+/rrr — tastiera (include extra)
 /ping — se tace, sveglialo
 
 Non sono una coscienza. Sono uno strumento che rifiuta di chiuderti le ipotesi.

@@ -2,16 +2,18 @@ start - Ingresso nel protocollo
 tesi - La tesi grande (IPOTESI + P6)
 strati - I due strati e le etichette
 p5p6 - Le due leggi
-libro - Il Protocollo per intero, a pagine
-scacchiera - Quindici case UNKNOWN
 santuario - Esperienza guidata del Santuario
-tieni_aperto - Deposita una possibilità aperta
+tieni_aperto - Deposita una possibilità aperta (IPOTESI + P6)
 lista - Rivedi le tue possibilità
-registro - Registro epistemico (strati + P6)
-stato - Conteggi tecnici del diario
-azione - Registra un’azione verificabile
+azione - Registra un'azione verificabile
 veli - Dissolvi uno dei tre veli
-etichetta - Colloca un’affermazione negli strati
+etichetta - Colloca un'affermazione negli strati
 aiuto - Elenco comandi
+rrr - Tastiera con tutti i comandi
+libro - Il Protocollo a pagine
+registro - Registro epistemico
+stato - Conteggi tecnici
+testimone - Un atto che un terzo può vedere
+fuori - Una cosa fatta oggi, fuori da qui
 ping - Verifica se il processo è vivo
 annulla - Esci da un flusso in corso
