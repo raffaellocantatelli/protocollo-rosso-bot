@@ -1,0 +1,122 @@
+--- r3_system_v14_baseline.py	2026-09-02 07:48:30.000000000 +0000
++++ r3_system.py	2026-09-24 07:59:00.000000000 +0000
+@@ -1,8 +1,23 @@
++"""
++r3_system.py — EVIDENCE_CANDIDATE (audit/cycleflow-resilience)
++Evolved from CANDIDATE with:
++  - Structured metadata (run_id, epoch, hop/max_hops, schema_version, trace, error)
++  - Fault isolation (try/except around .step())
++  - Real chain-forwarding in .full_cycle() (output[n] -> input[n+1])
++"""
++
+ import sys
+ import os
++import uuid
++import traceback
+ from datetime import datetime, timezone
+ import json
+ import random
+ 
+-# ── Flusso Ciclico 4 Nodi ──────────────────────────────────────────
++# ── Schema ──────────────────────────────────────────────────────────
++SCHEMA_VERSION = "2.0.0-EVIDENCE"
+ 
++# ── Flusso Ciclico 4 Nodi ──────────────────────────────────────────
+ CYCLE_NODES = [
+     {"id": "RAFFA-001",  "role": "Orchestratore",   "desc": "Propone e dispone"},
+     {"id": "DECOMP-005", "role": "Decompositore",    "desc": "Scompone in sotto-domande"},
+@@ -31,19 +46,62 @@
+ 
+ class CyclicFlowEngine:
+-    """Motore del flusso ciclico a 4 nodi."""
++    """Motore del flusso ciclico a 4 nodi — EVIDENCE_CANDIDATE."""
+ 
+     def __init__(self):
+         self.nodes = {n["id"]: n for n in CYCLE_NODES}
+         self.transitions = TRANSITIONS
+         self.epoch = 0
+ 
+-    def step(self, data=None):
+-        """Esegue una transizione e avanza di un passo nel ciclo."""
+-        t = self.transitions[self.epoch % len(self.transitions)]
+-        result = {
+-            "epoch": self.epoch,
+-            "from": t["from"],
+-            "to": t["to"],
+-            "trigger": t["trigger"],
+-            "data": data or "NOP",
+-            "timestamp": datetime.now(timezone.utc).isoformat(),
+-        }
++    @staticmethod
++    def _build_metadata(*, run_id, epoch, hop, max_hops, source, destination,
++                        trigger, data, trace=None, error=None):
++        return {
++            "run_id": str(run_id),
++            "schema_version": SCHEMA_VERSION,
++            "epoch": epoch,
++            "hop": hop,
++            "max_hops": max_hops,
++            "source": source,
++            "destination": destination,
++            "trigger": trigger,
++            "data": data,
++            "trace": trace or [],
++            "error": error,
++            "timestamp": datetime.now(timezone.utc).isoformat(),
++        }
++
++    def step(self, data=None, *, run_id=None, hop=0, max_hops=4, trace=None):
++        t = self.transitions[self.epoch % len(self.transitions)]
++        rid = run_id or uuid.uuid4()
++        try:
++            processed_data = self._process_node(t, data)
++            result = self._build_metadata(
++                run_id=rid, epoch=self.epoch, hop=hop, max_hops=max_hops,
++                source=t["from"], destination=t["to"], trigger=t["trigger"],
++                data=processed_data, trace=(trace or []) + [t["from"]], error=None,
++            )
++        except Exception as exc:
++            result = self._build_metadata(
++                run_id=rid, epoch=self.epoch, hop=hop, max_hops=max_hops,
++                source=t["from"], destination=t["to"], trigger=t["trigger"],
++                data=data or "NOP", trace=(trace or []) + [t["from"]],
++                error={"type": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc()},
++            )
+         self.epoch += 1
+         return result
+ 
++    def _process_node(self, transition, data):
++        return data if data is not None else "NOP"
++
+     def full_cycle(self, data=None):
+-        """Esegue un ciclo completo (4 transizioni)."""
+-        return [self.step(data) for _ in range(len(self.transitions))]
++        run_id = uuid.uuid4()
++        max_hops = len(self.transitions)
++        results = []
++        current_data = data
++        trace = []
++        for hop in range(max_hops):
++            result = self.step(current_data, run_id=run_id, hop=hop, max_hops=max_hops, trace=list(trace))
++            results.append(result)
++            trace = result["trace"]
++            current_data = result["data"]
++        return results
+ 
+     def status(self):
+@@ -52,6 +110,7 @@
+             "current_node": current_node,
+             "next_trigger": self.transitions[current_idx]["trigger"],
+             "cycle_complete_count": self.epoch // len(self.transitions),
++            "schema_version": SCHEMA_VERSION,
+         }
+ 
+ 
+@@ -75,7 +134,7 @@
+ 
+ class R3MultiSystem:
+-    VERSION = "14.1.0-CYCLEFLOW"
++    VERSION = "15.0.0-EVIDENCE"
+ 
+     def __init__(self):
+         self.id = "R3_MULTI_SYSTEM"
